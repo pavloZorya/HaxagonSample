@@ -1,4 +1,4 @@
-package com.pavlo.zoria.haxagonalsample.infrastructure.database;
+package com.pavlo.zoria.haxagonalsample.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -9,17 +9,19 @@ import androidx.annotation.Nullable;
 
 import com.pavlo.zoria.haxagonalsample.domain.model.User;
 import com.pavlo.zoria.haxagonalsample.domain.port.UserDaoPort;
-import com.pavlo.zoria.haxagonalsample.infrastructure.database.model.UserDaoModel;
+import com.pavlo.zoria.haxagonalsample.database.model.UserDaoModel;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.pavlo.zoria.haxagonalsample.infrastructure.database.model.UserDaoModel.COLUMN_NAME_PROFILE_IMAGE;
-import static com.pavlo.zoria.haxagonalsample.infrastructure.database.model.UserDaoModel.COLUMN_NAME_USER_NAME;
-import static com.pavlo.zoria.haxagonalsample.infrastructure.database.model.UserDaoModel.ID;
-import static com.pavlo.zoria.haxagonalsample.infrastructure.database.model.UserDaoModelKt.TABLE_NAME;
-import static java.util.Collections.emptyList;
+import static com.pavlo.zoria.haxagonalsample.database.model.UserDaoModel.COLUMN_NAME_PROFILE_IMAGE;
+import static com.pavlo.zoria.haxagonalsample.database.model.UserDaoModel.COLUMN_NAME_USER_NAME;
+import static com.pavlo.zoria.haxagonalsample.database.model.UserDaoModel.ID;
+import static com.pavlo.zoria.haxagonalsample.database.model.UserDaoModelKt.TABLE_NAME;
 
 public class UserDao implements UserDaoPort {
     private SQLiteDatabase writableDatabase;
@@ -37,14 +39,21 @@ public class UserDao implements UserDaoPort {
 
     public static final String USER_DAO_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
+    @NotNull
+    @Override
     public List<User> getAll() {
-        return emptyList();
+        Cursor cursor = writableDatabase.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        ArrayList<User> users = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            users.add(parseUser(cursor));
+        }
+        return users;
     }
 
     @Nullable
     @Override
     public User getUserById(@NonNull String id) {
-        String selection = id + " = ?";
+        String selection = ID + " = ?";
         String[] selectionArgs = {id};
 
         Cursor cursor = writableDatabase.query(
@@ -67,7 +76,7 @@ public class UserDao implements UserDaoPort {
     @Override
     public void save(User user) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME_USER_NAME, user.getName());
+        values.put(COLUMN_NAME_USER_NAME, "DB: " + user.getName());
         values.put(COLUMN_NAME_PROFILE_IMAGE, user.getProfileImage());
         writableDatabase.insert(TABLE_NAME, null, values);
     }

@@ -31,6 +31,7 @@ class UsersListFragment : Fragment(), UsersListContract.View {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        context
         return inflater.inflate(R.layout.fragment_users_list, container, false)
     }
 

@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @SuppressLint("CheckResult")
-class UserGeneratorAdapter @Inject constructor(private val dataGenerator: UserLoader) :
+class UserGeneratorController @Inject constructor(private val dataGenerator: UserLoader) :
     UserInfrastructurePort {
 
     private val observable = PublishRelay.create<List<User>>()
@@ -21,11 +21,11 @@ class UserGeneratorAdapter @Inject constructor(private val dataGenerator: UserLo
         generateUsers()
     }
 
-    override fun getAll(): Observable<List<User>> {
+    override fun getAllDataEmitter(): Observable<List<User>> {
         return observable
     }
 
-    override fun getUserById(id: String): Observable<User?> {
+    override fun getUserByIdEmitter(id: String): Observable<User?> {
         val observable = PublishRelay.create<User?>()
         return generateUser(observable)
     }
@@ -36,7 +36,7 @@ class UserGeneratorAdapter @Inject constructor(private val dataGenerator: UserLo
     }
 
     private fun generateUsers() {
-        Observable.interval(1000, 10_000, TimeUnit.MILLISECONDS)
+        Observable.interval(3_000, 10_000, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {

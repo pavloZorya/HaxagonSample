@@ -5,7 +5,7 @@ import com.pavlo.zoria.haxagonalsample.view.user.UsersListContract;
 
 import dagger.Component;
 
-@Component(modules = UsersListFragmentModule.class, dependencies = ApplicationComponent.class)
+@Component(modules = {UsersListFragmentModule.class, SchedulerProviderModule.class}, dependencies = ApplicationComponent.class)
 @UserListFragmentScope
 public interface UsersListComponent {
     UsersListContract.Presenter getPresenter();

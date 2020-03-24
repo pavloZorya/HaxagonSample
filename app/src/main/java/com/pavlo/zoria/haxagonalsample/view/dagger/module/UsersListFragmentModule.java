@@ -1,6 +1,8 @@
 package com.pavlo.zoria.haxagonalsample.view.dagger.module;
 
 import com.pavlo.zoria.haxagonalsample.infrastructure.generator.UserInfrastructurePort;
+import com.pavlo.zoria.haxagonalsample.utils.BaseSchedulerProvider;
+import com.pavlo.zoria.haxagonalsample.utils.SchedulerProvider;
 import com.pavlo.zoria.haxagonalsample.view.user.UsersListContract;
 import com.pavlo.zoria.haxagonalsample.view.user.UsersListPresenter;
 
@@ -18,7 +20,7 @@ public class UsersListFragmentModule {
 
     @Provides
     @UserListFragmentScope
-    public UsersListContract.Presenter provideDetailPresenter(UserInfrastructurePort repository) {
-        return new UsersListPresenter(view, repository);
+    public UsersListContract.Presenter provideDetailPresenter(UserInfrastructurePort repository, BaseSchedulerProvider schedulerProvider) {
+        return new UsersListPresenter(view, repository, schedulerProvider);
     }
 }

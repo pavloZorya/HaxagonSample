@@ -1,10 +1,11 @@
-package com.pavlo.zoria.haxagonalsample.infrastructure.database
+package com.pavlo.zoria.haxagonalsample.database
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.pavlo.zoria.haxagonalsample.infrastructure.database.UserDao.USER_DAO_CREATE_ENTRIES
-import com.pavlo.zoria.haxagonalsample.infrastructure.database.UserDao.USER_DAO_DELETE_ENTRIES
+import com.pavlo.zoria.haxagonalsample.database.UserDao.USER_DAO_CREATE_ENTRIES
+import com.pavlo.zoria.haxagonalsample.database.UserDao.USER_DAO_DELETE_ENTRIES
+import com.pavlo.zoria.haxagonalsample.database.model.TABLE_NAME
 import com.pavlo.zoria.haxagonalsample.view.dagger.ApplicationContext
 import com.pavlo.zoria.haxagonalsample.view.dagger.DatabaseInfo
 import javax.inject.Inject
@@ -28,5 +29,15 @@ class UserDaoDbHelper @Inject constructor(
             it.execSQL(USER_DAO_DELETE_ENTRIES)
             onCreate(it)
         }
+    }
+
+    fun dropAndRecreate() {
+        dropTables()
+        onCreate(writableDatabase)
+    }
+
+    fun dropTables() {
+        writableDatabase
+            .execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
     }
 }

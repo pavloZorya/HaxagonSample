@@ -2,7 +2,7 @@ package com.pavlo.zoria.haxagonalsample.view.dagger.module.db;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.pavlo.zoria.haxagonalsample.infrastructure.database.UserDaoDbHelper;
+import com.pavlo.zoria.haxagonalsample.database.UserDaoDbHelper;
 import com.pavlo.zoria.haxagonalsample.view.dagger.DatabaseInfo;
 
 import dagger.Module;

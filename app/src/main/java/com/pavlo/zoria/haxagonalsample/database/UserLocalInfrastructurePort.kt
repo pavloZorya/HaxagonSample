@@ -1,4 +1,4 @@
-package com.pavlo.zoria.haxagonalsample.infrastructure.database
+package com.pavlo.zoria.haxagonalsample.database
 
 import com.pavlo.zoria.haxagonalsample.domain.model.User
 import com.pavlo.zoria.haxagonalsample.infrastructure.generator.UserInfrastructurePort
